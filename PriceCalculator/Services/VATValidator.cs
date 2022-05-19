@@ -1,4 +1,6 @@
-﻿namespace PriceCalculatorAPI.Services
+﻿using PriceCalculatorAPI.Factories;
+
+namespace PriceCalculatorAPI.Services
 {
     public class VATValidator : IVATValidator
     {

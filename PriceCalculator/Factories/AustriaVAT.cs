@@ -1,4 +1,4 @@
-﻿namespace PriceCalculatorAPI
+﻿namespace PriceCalculatorAPI.Factories
 {
     public class AustriaVATService : VATService
     {
@@ -8,14 +8,14 @@
             validVAT.Add(13);
             validVAT.Add(20);
         }
-        
-       
+
+
     }
 
     public class AustriaVATFactory : IVATFactory
     {
-      
-        public  VATService CreatVATService()
+
+        public VATService CreatVATService()
         {
             return new AustriaVATService();
         }

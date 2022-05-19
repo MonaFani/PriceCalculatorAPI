@@ -1,4 +1,6 @@
-﻿namespace PriceCalculatorAPI.Helper
+﻿using PriceCalculatorAPI.Factories;
+
+namespace PriceCalculatorAPI.Helper
 {
     public static class VatFactoryHelper
     {
