@@ -28,16 +28,14 @@ namespace PriceCalculatorAPI.Controllers
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public IActionResult GetCalculatedPrice([FromQuery] PriceCalculatorParameters priceCalculatorParameter)
         {
-
-
             _vATValidator.ValidateVatRate(_austriaVatFactory.CreateVATService(), priceCalculatorParameter.VatRate);
 
             if (priceCalculatorParameter.PriceWithoutVAT == 0 && priceCalculatorParameter.ValueAddedTax == 0 && priceCalculatorParameter.PriceIncludingVAT == 0)
-                throw new PriceCalculatorException("Please fill one of price without VAT or VAT Amount or Price Including VAT.");
+                throw new PriceCalculatorException("Please fill one of price without VAT or VAT Amount or Price Including VAT.", nameof(PriceCalculatorParameters));
 
             var prices = new List<decimal> { priceCalculatorParameter.PriceWithoutVAT, priceCalculatorParameter.ValueAddedTax, priceCalculatorParameter.PriceIncludingVAT };
             if (prices.Where(x => x == 0).Count() != 2)
-                throw new PriceCalculatorException("Please fill only one of price without VAT or VAT Amount or Price Including VAT.");
+                throw new PriceCalculatorException("Please fill only one of price without VAT or VAT Amount or Price Including VAT.", nameof(PriceCalculatorParameters));
 
             var calculatedResult = _priceCalculatorService.Calculate(priceCalculatorParameter).ShapeData(Decimal.Zero).ToJsonCamelCase();
             return Ok(calculatedResult);

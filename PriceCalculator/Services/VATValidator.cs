@@ -8,8 +8,8 @@ namespace PriceCalculatorAPI.Services
         public void ValidateVatRate(VatService service, int VatRate)
         {
             var validVATRate = service.GetVAT();
-             if (!validVATRate.Contains(VatRate))
-                throw new PriceCalculatorException("VAT rate should be " + String.Join(" or ",validVATRate));
+            if (!validVATRate.Contains(VatRate))
+                throw new PriceCalculatorException("VAT rate should be " + String.Join(" or ", validVATRate), nameof(VatRate));
           
         }
     }
