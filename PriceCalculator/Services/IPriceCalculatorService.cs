@@ -1,10 +1,10 @@
-﻿using PriceCalculatorAPI.Models;
+﻿using PriceCalculatorAPI.Helper;
 
 namespace PriceCalculatorAPI.Services
 {
     public interface IPriceCalculatorService
     {
-        PriceDetail Calculate(int VATRate, decimal priceWithoutVAT = 0, decimal valueAddedTax = 0, decimal priceIncludingVAT = 0);
+        PriceCalculatedResult Calculate(PriceCalculatorParameter priceDetail);
        
         
     }

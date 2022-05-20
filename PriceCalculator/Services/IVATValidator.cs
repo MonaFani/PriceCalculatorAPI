@@ -2,9 +2,9 @@
 
 namespace PriceCalculatorAPI.Services
 {
-    public interface IVATValidator
+    public interface IVatValidator
     {
-         int ValidateVATRate(VATService vATService, string VATRate);
+        void ValidateVatRate(VatService vATService, int VatRate);
       
     }
 }

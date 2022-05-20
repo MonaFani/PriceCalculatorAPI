@@ -1,34 +1,29 @@
 ﻿using PriceCalculatorAPI.Helper;
-using PriceCalculatorAPI.Models;
 
 namespace PriceCalculatorAPI.Services
 {
     public class PriceCalculatorService : IPriceCalculatorService
     {
-        public PriceDetail Calculate(int VATRate, decimal priceWithoutVAT = 0, decimal valueAddedTax = 0, decimal priceIncludingVAT = 0)
+        public PriceCalculatedResult Calculate(PriceCalculatorParameter priceCalculatorParameter)
         {
-            if (priceWithoutVAT!=0) 
+            var result = new PriceCalculatedResult();
+            if (priceCalculatorParameter.PriceWithoutVAT != 0) 
             {
-                valueAddedTax = PriceCalculatorHelper.CalculateVatAmountByOrginalPrice(priceWithoutVAT, VATRate);
-                priceIncludingVAT = priceWithoutVAT + valueAddedTax; 
+                result.ValueAddedTax = PriceCalculatorHelper.CalculateVatAmountByOrginalPrice(priceCalculatorParameter.PriceWithoutVAT, priceCalculatorParameter.VatRate);
+                result.PriceIncludingVAT = priceCalculatorParameter.PriceWithoutVAT + result.ValueAddedTax; 
             }
-           else if (valueAddedTax != 0)
+           else if (priceCalculatorParameter.ValueAddedTax != 0)
             {
-                priceWithoutVAT = PriceCalculatorHelper.CalculateOriginalPriceByVatAmount(valueAddedTax, VATRate);
-                priceIncludingVAT = priceWithoutVAT + valueAddedTax;
+                result.PriceWithoutVAT = PriceCalculatorHelper.CalculateOriginalPriceByVatAmount(priceCalculatorParameter.ValueAddedTax, priceCalculatorParameter.VatRate);
+                result.PriceIncludingVAT = result.PriceWithoutVAT + priceCalculatorParameter.ValueAddedTax;
             }
-           else if (priceIncludingVAT != 0)
+           else if (priceCalculatorParameter.PriceIncludingVAT != 0)
             {
-                priceWithoutVAT = PriceCalculatorHelper.CalculateOriginalPriceByTotalPrice(priceIncludingVAT, VATRate);
-                valueAddedTax = priceIncludingVAT - priceWithoutVAT;
+                result.PriceWithoutVAT = PriceCalculatorHelper.CalculateOriginalPriceByTotalPrice(priceCalculatorParameter.PriceIncludingVAT, priceCalculatorParameter.VatRate);
+                result.ValueAddedTax = priceCalculatorParameter.PriceIncludingVAT - result.PriceWithoutVAT;
             }
-
-            return new PriceDetail()
-            {
-                PriceWithoutVAT = priceWithoutVAT,
-                ValueAddedTax = valueAddedTax,
-                PriceIncludingVAT = priceIncludingVAT,
-            };
+            return result;
+           
         }
        
         

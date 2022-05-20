@@ -1,10 +1,9 @@
-﻿namespace PriceCalculatorAPI.Models
+﻿namespace PriceCalculatorAPI.Helper
 {
-    public class PriceDetail
+    public class PriceCalculatedResult
     {
         public decimal PriceWithoutVAT { get; set; }
         public decimal ValueAddedTax { get; set; }
         public decimal PriceIncludingVAT { get; set; }
-
     }
 }
