@@ -39,17 +39,8 @@ namespace PriceCalculatorAPI.Controllers
             if (prices.Where(x => x == 0).Count() != 2)
                 throw new PriceCalculatorException("Please fill only one of price without VAT or VAT Amount or Price Including VAT.");
 
-            var result = _priceCalculatorService.Calculate(priceCalculatorParameter);
-            dynamic returnObj = result.ShapeData(Decimal.Zero);
-            var serializeOptions = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true,
-                DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
-            };
-            var jsonString = JsonSerializer.Serialize(returnObj, serializeOptions);
-
-            return Ok(jsonString);
+            var calculatedResult = _priceCalculatorService.Calculate(priceCalculatorParameter).ShapeData(Decimal.Zero).ToJsonCamelCase();
+            return Ok(calculatedResult);
         }
     }
 }

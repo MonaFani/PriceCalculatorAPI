@@ -1,5 +1,6 @@
 ﻿using System.Dynamic;
 using System.Reflection;
+using System.Text.Json;
 
 namespace PriceCalculatorAPI.Helper
 {
@@ -20,29 +21,30 @@ namespace PriceCalculatorAPI.Helper
                 var propertyInfos = typeof(TSource).GetProperties();
                 propertyInfoList.AddRange(propertyInfos);
             }
-            else 
-            { 
-                var fieldsAfterSplit =  fields.Split(',');
+            else
+            {
+                var fieldsAfterSplit = fields.Split(',');
                 foreach (var field in fieldsAfterSplit)
                 {
                     var propetyName = field.Trim();
                     var propertyInfo = typeof(TSource).GetProperty(propetyName);
 
-                    if (propertyInfo == null) 
+                    if (propertyInfo == null)
                     {
                         throw new Exception($"Property {propetyName} wasn't found on {typeof(TSource)}");
                     }
 
-                    propertyInfoList.Add(propertyInfo);                }
-            
+                    propertyInfoList.Add(propertyInfo);
+                }
+
             }
 
             foreach (var propertyInfo in propertyInfoList)
             {
                 var propertyValue = propertyInfo.GetValue(source);
 
-                ((IDictionary<string,object>)expandObject).Add(propertyInfo.Name, propertyValue);
-            
+                ((IDictionary<string, object>)expandObject).Add(propertyInfo.Name, propertyValue);
+
             }
 
             return expandObject;
@@ -69,5 +71,19 @@ namespace PriceCalculatorAPI.Helper
 
             return expandObject;
         }
+
+        public static string ToJsonCamelCase<TSource>(
+            this TSource source)
+        {
+            var serializeOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true,
+                DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+            };
+
+            return JsonSerializer.Serialize(source, serializeOptions);
+        }
+
     }
 }
