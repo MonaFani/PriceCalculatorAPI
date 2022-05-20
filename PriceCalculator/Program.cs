@@ -4,15 +4,17 @@ using PriceCalculatorAPI;
 using PriceCalculatorAPI.Factories;
 using PriceCalculatorAPI.Middleware;
 using PriceCalculatorAPI.Services;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers( setUpAction => 
+builder.Services.AddControllers(setUpAction =>
 {
     setUpAction.ReturnHttpNotAcceptable = true;
     setUpAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+
 });
 
 builder.Services.Configure<ApiBehaviorOptions>(o =>

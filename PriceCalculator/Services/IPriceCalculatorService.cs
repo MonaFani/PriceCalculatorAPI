@@ -4,7 +4,7 @@ namespace PriceCalculatorAPI.Services
 {
     public interface IPriceCalculatorService
     {
-        PriceCalculatedResult Calculate(PriceCalculatorParameter priceDetail);
+        PriceCalculatedResult Calculate(PriceCalculatorParameters priceDetail);
        
         
     }

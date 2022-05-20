@@ -4,7 +4,7 @@ namespace PriceCalculatorAPI.Services
 {
     public class PriceCalculatorService : IPriceCalculatorService
     {
-        public PriceCalculatedResult Calculate(PriceCalculatorParameter priceCalculatorParameter)
+        public PriceCalculatedResult Calculate(PriceCalculatorParameters priceCalculatorParameter)
         {
             var result = new PriceCalculatedResult();
             if (priceCalculatorParameter.PriceWithoutVAT != 0) 

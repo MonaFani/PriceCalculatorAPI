@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using PriceCalculatorAPI.Factories;
 using PriceCalculatorAPI.Helper;
 using PriceCalculatorAPI.Services;
 using System.Dynamic;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 
@@ -26,7 +26,7 @@ namespace PriceCalculatorAPI.Controllers
         }
 
         [Microsoft.AspNetCore.Mvc.HttpGet]
-        public IActionResult GetCalculatedPrice([FromQuery] PriceCalculatorParameter priceCalculatorParameter)
+        public IActionResult GetCalculatedPrice([FromQuery] PriceCalculatorParameters priceCalculatorParameter)
         {
 
 
@@ -40,24 +40,16 @@ namespace PriceCalculatorAPI.Controllers
                 throw new PriceCalculatorException("Please fill only one of price without VAT or VAT Amount or Price Including VAT.");
 
             var result = _priceCalculatorService.Calculate(priceCalculatorParameter);
-            dynamic returnObj = new ExpandoObject();
-            if (result.PriceWithoutVAT == 0)
+            dynamic returnObj = result.ShapeData(Decimal.Zero);
+            var serializeOptions = new JsonSerializerOptions
             {
-                returnObj.PriceIncludingVAT = result.PriceIncludingVAT;
-                returnObj.ValueAddedTax = result.ValueAddedTax;
-            }
-            else if (result.PriceIncludingVAT == 0)
-            {
-                returnObj.PriceWithoutVat = result.PriceWithoutVAT;
-                returnObj.ValueAddedTax = result.ValueAddedTax;
-            }
-            else if (result.ValueAddedTax == 0)
-            {
-                returnObj.PriceWithoutVat = result.PriceWithoutVAT;
-                returnObj.PriceIncludingVAT = result.PriceIncludingVAT;
-            }
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true,
+                DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+            };
+            var jsonString = JsonSerializer.Serialize(returnObj, serializeOptions);
 
-            return Ok(returnObj);
+            return Ok(jsonString);
         }
     }
 }
