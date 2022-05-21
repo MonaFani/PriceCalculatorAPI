@@ -12,6 +12,7 @@ namespace PriceCalculatorAPI.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("api/pricecalculator")]
     [ApiController]
+    [ResponseCache(NoStore = true)]
     public class PriceCalculatorController : ControllerBase
     {
         private readonly IPriceCalculatorService _priceCalculatorService;

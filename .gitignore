@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/PriceCalculator/Controllers/ErrorsController.cs
+/PriceCalculator/Exceptions/IExceptionFilter .cs
+/PriceCalculator/Exceptions/PriceCalculatorExceptionFilter.cs
