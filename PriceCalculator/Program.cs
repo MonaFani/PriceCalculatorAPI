@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using PriceCalculatorAPI;
-using PriceCalculatorAPI.Factories;
 using PriceCalculatorAPI.Middleware;
 using PriceCalculatorAPI.Services;
 using System.Text.Json;
@@ -9,6 +8,8 @@ using System.Text.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+
 
 builder.Services.AddControllers(setUpAction =>
 {
@@ -29,8 +30,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ExceptionHandlingMiddleware>();
 builder.Services.AddTransient<IPriceCalculatorService, PriceCalculatorService>();
 builder.Services.AddTransient<IVatValidator, VatValidator>();
-builder.Services.AddTransient<IAustriaVatFactory, AustriaVatFactory>();
-var app = builder.Build();
+builder.Services.AddTransient<IVatService, VatService>();
+builder.Services.AddSingleton<ICountryVat, CountryVat>();
+
+
+    var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

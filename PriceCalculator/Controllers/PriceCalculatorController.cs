@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PriceCalculatorAPI.Factories;
 using PriceCalculatorAPI.Helper;
 using PriceCalculatorAPI.Services;
 using System.Dynamic;
@@ -17,19 +16,19 @@ namespace PriceCalculatorAPI.Controllers
     {
         private readonly IPriceCalculatorService _priceCalculatorService;
         private readonly IVatValidator _vATValidator;
-        private readonly IAustriaVatFactory _austriaVatFactory;
+        private readonly IVatService _vatService;
 
-        public PriceCalculatorController(IPriceCalculatorService priceCalculator, IVatValidator vATValidator, IAustriaVatFactory austriaVatFactory)
+        public PriceCalculatorController(IPriceCalculatorService priceCalculator, IVatValidator vATValidator, IVatService vatService)
         {
             _priceCalculatorService = priceCalculator;
             _vATValidator = vATValidator;
-            _austriaVatFactory = austriaVatFactory;
+            _vatService = vatService;
         }
 
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public IActionResult GetCalculatedPrice([FromQuery] PriceCalculatorParameters priceCalculatorParameter)
         {
-            _vATValidator.ValidateVatRate(_austriaVatFactory.CreateVATService(), priceCalculatorParameter.VatRate);
+            _vATValidator.ValidateVatRate(_vatService.GetVAT(), priceCalculatorParameter.VatRate);
 
             if (priceCalculatorParameter.PriceWithoutVAT == 0 && priceCalculatorParameter.ValueAddedTax == 0 && priceCalculatorParameter.PriceIncludingVAT == 0)
                 throw new PriceCalculatorException("Please fill one of price without VAT or VAT Amount or Price Including VAT.", nameof(PriceCalculatorParameters));
