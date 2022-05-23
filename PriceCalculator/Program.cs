@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using PriceCalculatorAPI;
-using PriceCalculatorAPI.Middleware;
+using PriceCalculatorAPI.Middlewares;
 using PriceCalculatorAPI.Services;
 using System.Text.Json;
 

@@ -3,7 +3,7 @@ using PriceCalculatorAPI.Helper;
 using System.Dynamic;
 using System.Net;
 
-namespace PriceCalculatorAPI.Middleware
+namespace PriceCalculatorAPI.Middlewares
 {
     public class ExceptionHandlingMiddleware : IMiddleware
     {
