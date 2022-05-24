@@ -5,7 +5,15 @@ using PriceCalculatorAPI.Middlewares;
 using PriceCalculatorAPI.Services;
 using System.Text.Json;
 
-var builder = WebApplication.CreateBuilder(args);
+//set ContentRootPath so that builder.Host.UseWindowsService() doesn't crash when running as a service
+
+var webApplicationOptions = new WebApplicationOptions
+{
+    ContentRootPath = AppContext.BaseDirectory,
+    Args = args,
+};
+
+var builder = WebApplication.CreateBuilder(webApplicationOptions);
 
 // Add services to the container.
 
@@ -44,7 +52,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-
+app.UseHsts();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
