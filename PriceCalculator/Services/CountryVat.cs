@@ -6,9 +6,12 @@ namespace PriceCalculatorAPI.Services
     {
         Dictionary<string, List<int>> countriesVat = new Dictionary<string, List<int>>();
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public CountryVat(IWebHostEnvironment webHostEnvironment)
+        private readonly IConfiguration _config;
+
+        public CountryVat(IWebHostEnvironment webHostEnvironment, IConfiguration config)
         {
             _webHostEnvironment = webHostEnvironment;
+            _config = config;
         }
 
         public List<int> GetVAT(string countryName)
@@ -26,6 +29,7 @@ namespace PriceCalculatorAPI.Services
 
         private Dictionary<string, List<int>>? GetContriesVat()
         {
+          //  return _config.GetSection("countriesVat").Get<Dictionary<string, List<int>>>();
             var rootPath = _webHostEnvironment.ContentRootPath; 
 
             var fullPath = Path.Combine(rootPath, "CountriesVat.json"); 
